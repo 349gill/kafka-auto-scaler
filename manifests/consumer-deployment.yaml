@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer
+  labels:
+    app: kafka-consumer
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      containers:
+        - name: kafka-consumer
+          image: apache/kafka:3.7.0
+          command:
+            - /opt/kafka/bin/kafka-console-consumer.sh
+            - --bootstrap-server=kafka:9092
+            - --topic=orders
+            - --group=kafka-consumer-group
+            - --consumer-property=max.poll.records=5
